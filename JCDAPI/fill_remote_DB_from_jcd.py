@@ -1,9 +1,17 @@
-from JCDAPI import dbinfo as db
+import json
+import requests
 import traceback
+from datetime import datetime
+
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from JCDAPI import dbinfo as db
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from JCDAPI.create_db_programs.create_db_jcd2 import Stations, Availability, Base
-
 
 # ✅ Load database credentials from dbinfo.py
 USER = db.USER
@@ -22,6 +30,44 @@ Session = sessionmaker(bind=engine)
 
 # ✅ Ensure tables are created (only needed once)
 Base.metadata.create_all(engine)
+
+
+###################### Function to insert station data into the database ######################
+
+def stations_to_db(text_data):
+    """ Inserts or updates station metadata into the `stations` table. """
+    session = Session()
+    try:
+        stations = json.loads(text_data)
+        station_objects = []
+        
+        for station in stations:
+            station_objects.append(
+                Stations(
+                    number=station.get('number'),
+                    contract_name=station.get('contract_name'),
+                    name=station.get('name'),
+                    address=station.get('address'),
+                    lat=station.get('position', {}).get('lat'),
+                    long=station.get('position', {}).get('lng'),
+                    banking=bool(station.get('banking')),
+                    bonus=bool(station.get('bonus')),
+                    bike_stands=station.get('bike_stands')
+                )
+            )
+
+        session.bulk_save_objects(station_objects)  # ✅ Bulk insert/update
+        session.commit()
+        print("✅ Station data inserted successfully!")
+
+    except Exception as e:
+        session.rollback()
+        print("🚨 Error inserting stations:", traceback.format_exc())
+    
+    finally:
+        session.close()
+
+###################### Function to insert availability data ######################
 
 def availability_to_db(text_data):
     """ Inserts or updates real-time bike availability data into the `availability` table. """
@@ -58,3 +104,18 @@ def availability_to_db(text_data):
 
     finally:
         session.close()
+
+
+###################### Fetch Data from JCDecaux API ######################
+
+try:
+    # ✅ Fetch data from the JCDecaux API
+    response = requests.get(db.STATIONS_URI, params={"apiKey": db.JCKEY, "contract": db.NAME})
+    response.raise_for_status()  # Raise error for failed request
+
+    # ✅ Insert station and availability data
+    # stations_to_db(response.text)  # Insert station data only once
+    availability_to_db(response.text)  # Update availability continuously
+    
+except Exception as e:
+    print("🚨 Error:", traceback.format_exc())
