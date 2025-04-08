@@ -1,4 +1,13 @@
+import sqlalchemy as sqla
 from sqlalchemy import create_engine, text
+import traceback
+import json
+import requests
+import os, sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from JCDAPI import dbinfo as db
+from datetime import datetime
 
 ############################# CONNECT TO THE DATABASE #######################################
 
@@ -6,8 +15,6 @@ connection_string = f"mysql+pymysql://{db.USER}:{db.PASSWORD}@{db.URI}:{db.PORT}
 engine = create_engine(connection_string, echo=True)
 
 ############################ FUNCTION TO INSERT CURRENT WEATHER #############################
-from datetime import datetime
-import json
 import traceback
 from sqlalchemy import text
 
@@ -62,3 +69,16 @@ def currentWeather_to_db(text_data, in_engine):
         print(f"Missing expected key in API response: {e}")
     except Exception as e:
         print("Database Insertion Error:", traceback.format_exc())
+
+
+############################# FETCH DATA FROM OPEN WEATHER API #############################
+
+try:
+    # Request data from OW API
+    responseCurrent = requests.get(f"{db.CURRENT_OWURI}")
+    
+    # Insert various time ranges into the DB
+    currentWeather_to_db(responseCurrent.text, engine)
+
+except Exception as e:
+    print("Error:", traceback.format_exc())
