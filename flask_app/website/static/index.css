@@ -1,0 +1,324 @@
+/* RESET & BASE STYLES */
+* {
+    font-family: Montserrat, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #000; /* Overall black background */
+    color: #fff;
+    overflow-x: hidden;
+  }
+  
+  /* NAVBAR */
+  .navbar {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    position: absolute; 
+    width: 100%;
+    background-color: transparent;
+    z-index: 100;
+  }
+  
+  .logo {
+    cursor: pointer;
+    font-size: 1.5rem;
+  }
+  
+  .accent {
+    color: #EC1763; /* Pink accent color */
+  }
+  
+  /* NAV LINKS */
+  .nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem; /* Space between nav items */
+  }
+  
+  .nav-links a {
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+    color: #fff;
+  }
+  
+  .nav-links a:hover {
+    background: linear-gradient(to right, #C50248, #EC1763);
+    color: #fff;
+  }
+  
+  /* MAIN CONTAINER (TWO COLUMNS) */
+  .container {
+    display: flex;
+    height: 100vh; 
+  }
+  
+  /* LEFT COLUMN */
+  .left {
+    position: relative; /* This enables absolute positioning for child elements */
+    flex: 1;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #1b1a1b;
+  }
+  
+  .left h1 {
+    position: relative;
+    left: 80px;
+    bottom: 90px;
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+  
+  .left .head2 {
+    left: 100px;
+  }
+  
+  .left p {
+    position: relative;
+    left: 80px;
+    bottom: 60px;
+    font-size: 1.3rem;
+    max-width: 600px;
+    margin-bottom: 2rem;
+  }
+  
+  /* BOOK NOW BUTTON */
+  .book-btn {
+    background-color: #EC1763;
+    color: #fff;
+    padding: 15px 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 4px;
+    width: 25%;
+    position: relative;
+    left: 180px;
+    bottom: 40px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .book-btn:hover {
+    background: #fff;
+    color: #EC1763;
+  }
+  
+  /* RIGHT COLUMN */
+  .right {
+    flex: 1;
+    background-color: #1b1a1b; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+  }
+  
+  .right img {
+    max-width: 100%; /* Make sure the bike image fits nicely */
+    height: auto;
+  }
+  
+  .left-content {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .corner-image {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 800px;
+    height: auto;
+    z-index: 0;
+  }
+  
+  /* RESPONSIVE STYLES */
+  @media (max-width: 1400px) {
+    .corner-image {
+        width: 600px;
+    }
+  }
+  
+  @media (max-width: 1200px) {
+    .left h1 {
+        font-size: 2.5rem;
+        left: 60px;
+        bottom: 70px;
+    }
+    
+    .left p {
+        font-size: 1.1rem;
+        left: 60px;
+        bottom: 40px;
+    }
+    
+    .book-btn {
+        left: 120px;
+        width: 30%;
+    }
+    
+    .corner-image {
+        width: 500px;
+    }
+  }
+  
+  @media (max-width: 992px) {
+    .container {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .left, .right {
+        width: 100%;
+    }
+    
+    .left {
+        min-height: 500px;
+        padding: 2rem;
+    }
+    
+    .left h1 {
+        font-size: 2.2rem;
+        left: 40px;
+        bottom: 50px;
+    }
+    
+    .left .head2 {
+        left: 60px;
+    }
+    
+    .left p {
+        font-size: 1rem;
+        left: 40px;
+        bottom: 30px;
+        max-width: 500px;
+    }
+    
+    .book-btn {
+        left: 100px;
+        bottom: 20px;
+        width: 40%;
+    }
+    
+    .corner-image {
+        width: 450px;
+        opacity: 0.7; /* Make background less distracting on smaller screens */
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .navbar {
+        padding: 1rem;
+    }
+    
+    .nav-links {
+        gap: 1rem;
+    }
+    
+    .nav-links a {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+    
+    .left {
+        min-height: 400px;
+    }
+    
+    .left h1 {
+        font-size: 1.8rem;
+        left: 20px;
+        bottom: 40px;
+    }
+    
+    .left .head2 {
+        left: 30px;
+    }
+    
+    .left p {
+        font-size: 0.9rem;
+        left: 20px;
+        bottom: 20px;
+        max-width: 400px;
+    }
+    
+    .book-btn {
+        left: 50px;
+        width: 50%;
+        font-size: 0.9rem;
+        padding: 12px 10px;
+    }
+    
+    .corner-image {
+        width: 350px;
+        opacity: 0.5;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .navbar {
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 0;
+        padding: 1rem 0.5rem;
+    }
+    
+    .nav-links {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .nav-links a {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+    
+    .left {
+        padding: 1.5rem 1rem;
+    }
+    
+    .left h1 {
+        font-size: 1.5rem;
+        left: 10px;
+        bottom: 25px;
+    }
+    
+    .left .head2 {
+        left: 15px;
+    }
+    
+    .left p {
+        font-size: 0.85rem;
+        left: 10px;
+        bottom: 15px;
+        max-width: 95%;
+    }
+    
+    .book-btn {
+        left: 20px; 
+        width: 75%;
+        font-size: 0.85rem;
+        padding: 10px 8px;
+    }
+    
+    .corner-image {
+        width: 250px;
+        opacity: 0.4;
+    }
+  }
+  

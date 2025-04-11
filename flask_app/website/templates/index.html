@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dublin Bikes</title>
+  <!-- Link to your CSS file -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+<body>
+  
+  <!-- Header / Navbar -->
+  <header class="navbar">
+    <h1 class="logo">DUBLIN<span class="accent"> BIKES</span></h1>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="/explore">Explore Places</a></li>
+        <li><a href="/map">Bikes</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content: Left & Right Columns -->
+  <main class="container">
+    
+    <!-- Left Half -->
+    <section class="left">
+        <div class="left-content">
+      <h1>MAKING CITY</h1>
+      <h1 class="head2">LIVEABLE AGAIN</h1>
+      <p>
+        <strong>Shift your ride, not gears.</strong> <span>Ease your path towards the fastest way to move in the city. 
+        Create a cleaner, less congested city through a smart move.</span>
+      </p>
+      <button class="book-btn" onclick="window.location.href='/map'">Map</button>
+    </div>
+      <img src="{{ url_for('static', filename='images/circle.png') }}" alt="Corner Image" class="corner-image" />
+    </section>
+
+    <!-- Right Half -->
+    <section class="right">
+      <!-- Replace 'bike.png' with your own image path -->
+      <img src="{{ url_for('static', filename='images/cycle.webp') }}" alt="Bike" />
+    </section>  
+  </main>
+</body>
+
+</html>

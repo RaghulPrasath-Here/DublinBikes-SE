@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DublinBikes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_map.css') }}">
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="logo">
+        <span class="dublin">DUBLIN</span>
+        <span class="bikes">BIKES</span>
+        </div>
+        
+        <button class="home-btn"><a href="../">Home</a></button>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-container">
+        <!-- LEFT SIDEBAR -->
+        <aside class="sidebar">
+        <div class="input-box">
+            <input id="start" type="text" placeholder="ENTER STARTING POINT"/>
+        </div>
+        
+        <div class="dropbtn-container">
+            <div class="dropdown">
+                <!--
+                <span>Select Available Station</span>
+                <button id="dropbtn">Station Name</button>
+                <div class="dropdown-content">
+                    ${stationName}
+                </div>
+                
+                dropdown with names of station
+                -->
+            </div>
+        </div>
+        
+        <div class="action-box">
+            <button class="book-btn" onclick="calculateRoute()" class="route-btn">SEE ROUTE</button>
+        </div>
+        <div class="weather">
+            <img id="weather-icon" src="" alt="Weather Icon">
+            <p id="weather-condition"></p>
+            <p id="temperature"></p>
+        </div>
+        </aside>
+
+        <!-- RIGHT CONTENT (MAP) -->
+        <main class="map-container">
+        <!-- DISPLAY MAP -->
+        <div id="map"></div>
+        </main>
+    </div>
+
+    <!-- Google Maps API initialization -->
+    <script>
+        (g => {
+            var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window;
+            b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set(), e = new URLSearchParams();
+            u = () => h || (h = new Promise(async (f, n) => {
+                await (a = m.createElement("script"));
+                e.set("libraries", "places");  // Ensure the 'places' library is loaded here
+                for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]);
+                e.set("callback", c + ".maps." + q);
+                a.src = `https://maps.${c}apis.com/maps/api/js?` + e;
+                d[q] = f; a.onerror = () => h = n(Error(p + " could not load."));
+                a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a)
+            }));
+            d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n))
+        })({
+            key: "AIzaSyApakYz5jSRb3NS1bL4SgnyRoN7f6HNtcI",
+            v: "weekly"
+        });
+    </script>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='weather.js') }}"></script>  
+    <script src="{{ url_for('static', filename='markers.js') }}"></script>
+</body>
+</html>
