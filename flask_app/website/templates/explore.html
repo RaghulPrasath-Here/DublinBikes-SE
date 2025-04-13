@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+        </style>
+      <link rel="stylesheet" href="{{ url_for('static', filename='explore.css') }}">
+</head>
+<body>
+
+    <header class="navbar">
+        <h1 class="logo">DUBLIN<span class="accent"> BIKES</span></h1>
+        <a href="/" class="home-btn">Home</a>
+      </header>
+    
+      <!-- Main Content -->
+      <div class="container">
+        
+        <!-- First Row of Cards -->
+        <div class="cards-container">
+          <!-- Card 1: Dublin Castle -->
+          <div class="card">
+            <img src="{{ url_for('static', filename='images/Dublincastle.jpeg') }}" alt="Dublin Castle"/>
+            <h3>DUBLIN CASTLE</h3>
+            <p>
+                The Castle houses the magnificent State Apartments, the Chapel Royal, a 13th century Tower and some of its Medieval structures.
+            </p>
+            <button onclick="window.location.href='/map'">Visit</button>
+          </div>
+    
+          <!-- Card 2: The Temple Bar -->
+          <div class="card">
+            <img src="{{ url_for('static', filename='images/Temple-Bar.jpeg') }}" alt="Temple Bar"/>
+            <h3>THE TEMPLE BAR</h3>
+            <p>
+              Famous for its lively atmosphere and traditional Irish music, this spot is a must-visit.
+            </p>
+            <button onclick="window.location.href='/map'">Visit</button>
+          </div>
+    
+          <!-- Card 3: Guinness Storehouse -->
+          <div class="card">
+            <img src="{{ url_for('static', filename='images/Guinessstorhouse.jpg') }}" alt="Guinness Storehouse"/>
+            <h3>GUINNESS STOREHOUSE</h3>
+            <p>
+              Learn about the history and brewing process of Ireland's iconic stout, with panoramic views from the top.
+            </p>
+            <button onclick="window.location.href='/map'">Visit</button>
+          </div>
+        </div>
+    
+        <!-- Second Row of Cards -->
+        <div class="cards-container">
+          <!-- Card 4: Trinity College -->
+          <div class="card">
+            <img src="{{ url_for('static', filename='images/trinity.png') }}" alt="Trinity College"/>
+            <h3>TRINITY COLLEGE</h3>
+            <p>
+              Ireland's oldest university, known for its historic campus and the Book of Kells.
+            </p>
+            <button onclick="window.location.href='/map'">Visit</button>
+          </div>
+    
+          <!-- Card 5: St. Patrick's Cathedral -->
+          <div class="card">
+            <img src="{{ url_for('static', filename='images/patricks.png') }}" alt="St. Patrick's Cathedral"/>
+            <h3>ST. PATRICK'S CATHEDRAL</h3>
+            <p>
+                An iconic Gothic masterpiece built in honor of Ireland's patron saint.The cathedral is world famous for its choir, established in 1432
+            </p>
+            <button onclick="window.location.href='/map'">Visit</button>
+          </div>
+    
+          <!-- Card 6: Phoenix Park -->
+          <div class="card">
+            <img src="{{ url_for('static', filename='images/phoenix.png') }}" alt="Phoenix Park"/>
+            <h3>PHOENIX PARK</h3>
+            <p>
+              One of Europe's largest urban parks, home to Dublin Zoo, expansive green spaces, and wild deer.
+            </p>
+            <button onclick="window.location.href='/map'">Visit</button>
+          </div>
+        </div>
+      </div>
+</body>
+</html>
