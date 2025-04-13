@@ -1,0 +1,227 @@
+* {
+    font-family: Montserrat, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    background: #181818;
+    color: #fff;
+    padding-top: 70px; /* Space for the navbar */
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  .logo {
+    cursor: pointer;
+    font-size: 1.5rem;
+    white-space: nowrap;
+  }
+  
+  .accent {
+    color: #EC1763; /* Pink accent color */
+  }
+  
+  /* Navbar Styles */
+  .navbar {
+    background: #181818;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 0.8rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+  
+  
+  .navbar .home-btn {
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    background: linear-gradient(to right, #C50248, #EC1763);
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    border-radius: 13px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .home-btn:hover {
+    background: white;
+    color: #EC1763;
+  }
+  
+  /* Container for Main Content */
+  .container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 1.5rem auto;
+    padding: 0 1rem;
+  }
+  
+  /* Cards Grid Layout */
+  .cards-container {
+    margin: 2rem auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    max-width: 1400px;
+    padding: 0 1rem;
+  }
+  
+  /* Card Styles */
+  .card {
+    min-height: 450px;
+    max-height: 550px;
+    background: #2b2b2b;
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+  }
+  
+  .card img {
+    margin: 1.5rem auto 0;
+    width: 85%;
+    border-radius: 15px;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .card h3 {
+    margin: 1rem 0 0.5rem;
+    font-size: 1.3rem;
+    color: white;
+    padding: 0 0.5rem;
+  }
+  
+  .card p {
+    padding: 0 1.1rem 1rem;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: #ccc;
+    flex-grow: 1; /* Makes content take available space */
+  }
+  
+  .card button {
+    padding: 0.7rem 1.2rem;
+    margin: 0 auto 1.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    background: linear-gradient(to right, #C50248, #EC1763);
+    color: #fff;
+    border: none;
+    border-radius: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: auto;
+    align-self: center;
+  }
+  
+  .card button:hover {
+    background: white;
+    color: #EC1763;
+    transform: scale(1.05);
+  }
+  
+  /* Responsive Styles - Multiple Breakpoints */
+  @media (max-width: 1100px) {
+    body {
+        font-size: 15px;
+    }
+    
+    .cards-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    body {
+        padding-top: 120px;
+    }
+    
+    .navbar {
+        flex-direction: column;
+        padding: 0.6rem;
+    }
+    
+    .logo {
+        margin-bottom: 0.7rem;
+    }
+    
+    .cards-container {
+        grid-template-columns: 1fr;
+        margin: 1.5rem auto;
+    }
+    
+    .card {
+        min-height: 400px;
+    }
+    
+    .card img {
+        height: 180px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    body {
+        font-size: 14px;
+        padding-top: 110px;
+    }
+    
+    .container {
+        width: 95%;
+        padding: 0 0.5rem;
+    }
+    
+    .navbar {
+        padding: 0.5rem;
+    }
+    
+    .navbar .home-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .logo {
+        font-size: 1.2rem;
+    }
+    
+    .card {
+        min-height: 380px;
+    }
+    
+    .card img {
+        height: 160px;
+        width: 90%;
+    }
+    
+    .card h3 {
+        font-size: 1.1rem;
+    }
+    
+    .card p {
+        padding: 0 0.8rem 0.8rem;
+        font-size: 0.9rem;
+    }
+    
+    .card button {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+    }
+  }
+  
