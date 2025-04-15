@@ -171,3 +171,61 @@ function createBatchedMarkers(stations, AdvancedMarkerElement) {
     // Start processing
     processBatch();
 }
+
+// Build marker content 
+function buildMarkerContent(station, predictedBikes = null) {
+    const content = document.createElement("div");
+    content.classList.add("displayBox");
+
+    // Get station details
+    const name = station.name;
+    const bike_stands = station.bike_stands || 0;
+    const status = station.status || "Unknown";
+    
+    // Determine if showing prediction and calculate values
+    const isPrediction = predictedBikes !== null;
+    const available_bikes = isPrediction ? predictedBikes : station.available_bikes;
+    
+    // Calculate available stands - for predictions, recalculate from total stands
+    const available_bike_stands = isPrediction 
+        ? bike_stands - available_bikes 
+        : station.available_bike_stands;
+    
+    if (isPrediction) {
+        content.classList.add("prediction");
+    }
+
+    // Color logic based on availability
+    if (available_bikes === 0 || status === "CLOSED") {
+        content.classList.add("black");
+    } else if (bike_stands <= 15) {
+        // Small station
+        if (available_bikes <= 2) {
+            content.classList.add("red");
+        } else if (available_bikes <= 4) {
+            content.classList.add("orange");
+        } else {
+            content.classList.add("green");
+        }
+    } else {
+        // Medium/large station
+        if (available_bikes <= 4) {
+            content.classList.add("red");
+        } else if (available_bikes <= 7) {
+            content.classList.add("orange");
+        } else {
+            content.classList.add("green");
+        }
+    }
+
+    content.innerHTML = `
+        <div class='details'>
+            <h2>${name}<br></h2> 
+            <p><strong>${isPrediction ? 'Predicted' : 'Free'} Bikes:</strong> ${available_bikes}<br></p>
+            <p><strong>Free Stands:</strong> ${available_bike_stands}<br></p>
+            <p><strong>Total Stands:</strong> ${bike_stands}<br></p>
+        </div>
+    `;
+
+    return content;
+}
