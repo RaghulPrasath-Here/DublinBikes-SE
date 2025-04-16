@@ -229,3 +229,49 @@ function buildMarkerContent(station, predictedBikes = null) {
 
     return content;
 }
+
+// Toggle marker highlight and show station-specific historical data
+async function toggle(marker, station) {
+    // Remove existing chart if present
+    const existingChart = document.querySelector('.station-chart-container');
+    if (existingChart) {
+        existingChart.remove();
+    }
+    
+    if (activeMarker && activeMarker !== marker) {
+        activeMarker.content.classList.remove("highlight");
+        activeMarker.zIndex = null;
+    }
+
+    if (marker.content.classList.contains("highlight")) {
+        marker.content.classList.remove("highlight");
+        marker.zIndex = null;
+        activeMarker = null;
+    } else {
+        marker.content.classList.add("highlight");
+        marker.zIndex = 1;
+        marker.content.style.display = "block";
+        activeMarker = marker;
+        
+        // Show historical data for this station
+        if (window.Chart && station && station.number) {
+            try {
+                // Try to use preloaded data first, then individual fetch if not available
+                let stationHistory;
+                if (allStationHistory[station.number]) {
+                    stationHistory = allStationHistory[station.number];
+                } else {
+                    stationHistory = await fetchStationHistoricalData(station.number);
+                }
+                
+                if (stationHistory) {
+                    showStationChart(marker, station, stationHistory);
+                } else {
+                    console.warn(`No history data found for station ${station.number}`);
+                }
+            } catch (error) {
+                console.warn("Could not load station history:", error);
+            }
+        }
+    }
+}
