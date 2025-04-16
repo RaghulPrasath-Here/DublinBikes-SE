@@ -37,3 +37,22 @@ class WeatherHourly(db.Model):
     snow_1h = db.Column(db.Float)
     recorded_at = db.Column(db.DateTime)
 
+
+
+class WeatherCurrent(db.Model):
+    __tablename__ = 'currentWeather'  # ✅ Corrected table name
+
+    dt = db.Column(db.DateTime, primary_key=True)
+    temp = db.Column(db.Float)
+    feels_like = db.Column(db.Float)
+    humidity = db.Column(db.Integer)
+    pressure = db.Column(db.Integer)
+    wind_speed = db.Column(db.Float)
+    wind_gust = db.Column(db.Float)
+    weather_id = db.Column(db.Integer)
+    weather_description = db.Column(db.String(255))  # ✅ Match varchar(255)
+    rain_1h = db.Column(db.Float)
+    snow_1h = db.Column(db.Float)
+    recorded_at = db.Column(db.DateTime)
+
+
