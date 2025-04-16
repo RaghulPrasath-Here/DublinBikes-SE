@@ -275,3 +275,175 @@ async function toggle(marker, station) {
         }
     }
 }
+
+
+// PREDICTION FUNCTIONS
+
+// Add the time slider UI to the page
+function addTimeSliderUI() {
+    // Create slider container
+    const sliderContainer = document.createElement('div');
+    sliderContainer.className = 'prediction-controls';
+    
+    // Add inner HTML
+    sliderContainer.innerHTML = `
+        <div class="prediction-header">
+            <span>Showing: </span>
+            <span id="prediction-time">Current Data</span>
+        </div>
+        <input type="range" id="time-slider" min="0" max="23" value="0" class="slider" disabled>
+        <div class="prediction-labels">
+            <span>Current</span>
+            <span>24h Forecast</span>
+        </div>
+    `;
+    
+    // Add to page below weather
+    const weatherDiv = document.querySelector('.weather');
+    if (weatherDiv) {
+        weatherDiv.parentNode.insertBefore(sliderContainer, weatherDiv.nextSibling);
+    } else {
+        // Fallback - add to sidebar
+        document.querySelector('.sidebar')?.appendChild(sliderContainer);
+    }
+    
+    // Add slider styles
+    const style = document.createElement('style');
+    style.textContent = `
+.prediction-controls {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #222;
+    border-radius: 8px;
+}
+
+.prediction-header {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+#prediction-time {
+    color: #EC1763;
+}
+
+.slider {
+    width: 100%;
+    height: 8px;
+    -webkit-appearance: none;
+    background: #333;
+    outline: none;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #EC1763;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #EC1763;
+    cursor: pointer;
+}
+
+.slider:disabled {
+    opacity: 0.5;
+}
+
+.slider:disabled::-webkit-slider-thumb {
+    background: #999;
+}
+
+.slider:disabled::-moz-range-thumb {
+    background: #999;
+}
+
+.prediction-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #ccc;
+}
+
+/* Station chart styling */
+.station-chart-container {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 300px;
+    background-color: #222;
+    border-radius: 8px;
+    padding: 15px;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.station-chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.station-chart-header h3 {
+    font-size: 14px;
+    color: #fff;
+    margin: 0;
+}
+
+.close-chart {
+    background: none;
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.close-chart:hover {
+    color: #fff;
+}
+
+#station-chart {
+    width: 100% !important;
+    height: 180px !important;
+    background-color: rgba(51, 51, 51, 0.5);
+    border-radius: 4px;
+}
+
+/* Updated prediction marker styles */
+.displayBox.prediction.green {
+    background-color: rgba(76, 175, 80, 0.7); /* Lighter green */
+}
+
+.displayBox.prediction.orange {
+    background-color: rgba(255, 152, 0, 0.7); /* Lighter orange */
+}
+
+.displayBox.prediction.red {
+    background-color: rgba(244, 67, 54, 0.7); /* Lighter red */
+}
+
+.displayBox.prediction.black {
+    background-color: rgba(33, 33, 33, 0.7); /* Lighter black (dark grey) */
+}
+`;
+
+    document.head.appendChild(style);
+    
+    // Add slider event listener
+    const slider = document.getElementById('time-slider');
+    slider.addEventListener('input', function() {
+        activeTimeIndex = parseInt(this.value);
+        updatePredictionDisplay();
+    });
+}
