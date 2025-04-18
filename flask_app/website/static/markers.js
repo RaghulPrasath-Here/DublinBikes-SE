@@ -447,3 +447,55 @@ function addTimeSliderUI() {
         updatePredictionDisplay();
     });
 }
+
+// Fetch prediction data from API
+async function fetchPredictionData() {
+    try {
+        const response = await fetch('/predict-24h');
+        if (!response.ok) {
+            throw new Error(`API returned ${response.status}: ${response.statusText}`);
+        }
+        
+        predictionData = await response.json();
+        isDataLoaded = true;
+        
+        // Enable the slider now that data is loaded
+        const slider = document.getElementById('time-slider');
+        if (slider) {
+            slider.disabled = false;
+        }
+        
+        return true;
+    } catch (error) {
+        console.error("Error fetching prediction data:", error);
+        document.getElementById('prediction-time').textContent = 'Forecast Unavailable';
+        throw error;
+    }
+}
+
+// Process prediction times from the data
+function processPredictionTimes() {
+    // Get first station's data to extract times (all stations have the same timestamps)
+    const firstStationId = Object.keys(predictionData)[0];
+    
+    if (predictionData[firstStationId] && predictionData[firstStationId].length > 0) {
+        predictionTimes = predictionData[firstStationId]
+            .map(pred => {
+                const date = new Date(pred.forecast_time);
+                return {
+                    hour: date.getHours(),
+                    date: date.toLocaleDateString(),
+                    time: date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                    fullDateTime: date,
+                    original: pred.forecast_time
+                };
+            })
+            .filter(time => !(time.hour >= 0 && time.hour < 6)); // Remove midnight-5am (closed hours)
+        
+        // Update slider max value
+        const slider = document.getElementById('time-slider');
+        if (slider && predictionTimes.length > 0) {
+            slider.max = predictionTimes.length;
+        }
+    }
+}
