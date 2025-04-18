@@ -499,3 +499,52 @@ function processPredictionTimes() {
         }
     }
 }
+
+// Update prediction display based on slider position
+function updatePredictionDisplay() {
+    const timeDisplay = document.getElementById('prediction-time');
+    
+    if (activeTimeIndex === 0) {
+        // Show current data
+        timeDisplay.textContent = 'Current Data';
+        resetToCurrentData();
+    } else if (predictionTimes.length > 0) {
+        // Show prediction for selected time
+        const timeInfo = predictionTimes[activeTimeIndex-1]; // -1 because index 0 is "current"
+        timeDisplay.textContent = `${timeInfo.date} at ${timeInfo.time}`;
+        updateMarkersWithPredictions(timeInfo);
+    }
+}
+
+// Reset to current data
+function resetToCurrentData() {
+    allMarkers.forEach((data, stationId) => {
+        // Replace marker content with original data
+        if (data.marker && data.station) {
+            data.marker.content = buildMarkerContent(data.station);
+        }
+    });
+}
+
+// Update markers with prediction data
+function updateMarkersWithPredictions(timeInfo) {
+    allMarkers.forEach((data, stationId) => {
+        // Find prediction for this station
+        const prediction = findPrediction(stationId, timeInfo.original);
+        
+        if (prediction && data.marker && data.station) {
+            // Update marker with predicted data
+            data.marker.content = buildMarkerContent(
+                data.station, 
+                prediction.predicted_bikes
+            );
+        }
+    });
+}
+
+// Find prediction for a specific station at a specific time
+function findPrediction(stationId, timeString) {
+    if (!predictionData[stationId]) return null;
+    
+    return predictionData[stationId].find(p => p.forecast_time === timeString);
+}
