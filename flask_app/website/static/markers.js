@@ -668,3 +668,112 @@ function generateMockStationHistory() {
     
     return data;
 }
+
+// Create and show chart for a specific station
+function showStationChart(marker, station, historyData) {
+    // Remove any existing chart
+    const existingChart = document.querySelector('.station-chart-container');
+    if (existingChart) {
+        existingChart.remove();
+    }
+    
+    // Create chart container
+    const chartContainer = document.createElement('div');
+    chartContainer.className = 'station-chart-container';
+    
+    // Add inner HTML structure
+    chartContainer.innerHTML = `
+        <div class="station-chart-header">
+            <h3>${station.name} - Yesterday's Usage</h3>
+            <button class="close-chart">×</button>
+        </div>
+        <canvas id="station-chart"></canvas>
+    `;
+    
+    // Add to page
+    document.body.appendChild(chartContainer);
+    
+    // Add close button handler
+    document.querySelector('.close-chart').addEventListener('click', () => {
+        chartContainer.remove();
+    });
+    
+    // Process data
+    const processedData = processStationData(historyData);
+    
+    // Render chart
+    const ctx = document.getElementById('station-chart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: processedData.labels,
+            datasets: [
+                {
+                    label: 'Bikes Available',
+                    data: processedData.bikesAvailable,
+                    backgroundColor: 'rgba(76, 175, 80, 0.5)',
+                    borderColor: 'rgba(76, 175, 80, 1)',
+                    borderWidth: 1,
+                    fill: 'origin',
+                    tension: 0.4
+                },
+                {
+                    label: 'Stands Available',
+                    data: processedData.standsAvailable,
+                    backgroundColor: 'rgba(244, 67, 54, 0.5)',
+                    borderColor: 'rgba(244, 67, 54, 1)',
+                    borderWidth: 1,
+                    fill: 'origin',
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: '#eee',
+                        font: {
+                            size: 10
+                        },
+                        boxWidth: 12
+                    }
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                }
+            },
+            scales: {
+                x: {
+                    min: '6am',  // Start at 6am
+                    max: '11pm', // End at 11pm
+                    ticks: {
+                        color: '#ccc',
+                        font: {
+                            size: 8
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                },
+                y: {
+                    ticks: {
+                        color: '#ccc',
+                        font: {
+                            size: 8
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    stacked: false
+                }
+            }
+        }
+    });
+}
