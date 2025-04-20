@@ -616,3 +616,55 @@ async function fetchStationHistoricalData(stationId) {
         return null;
     }
 }
+
+// Generate realistic mock station history data
+function generateMockStationHistory() {
+    const data = {};
+    const totalStands = 30;
+    
+    // Generate data for operating hours (6am-11pm)
+    for (let hour = 6; hour < 24; hour++) {
+        // Morning rush (7-9am)
+        if (hour >= 7 && hour <= 9) {
+            const bikesAvailable = Math.max(3, Math.floor(totalStands * 0.15) + Math.floor(Math.random() * 4));
+            data[hour] = {
+                bikes_available: bikesAvailable,
+                stands_available: totalStands - bikesAvailable
+            };
+        }
+        // Lunch time (12-2pm)
+        else if (hour >= 12 && hour <= 14) {
+            const bikesAvailable = Math.max(5, Math.floor(totalStands * 0.4) + Math.floor(Math.random() * 5));
+            data[hour] = {
+                bikes_available: bikesAvailable,
+                stands_available: totalStands - bikesAvailable
+            };
+        }
+        // Evening rush (5-7pm)
+        else if (hour >= 17 && hour <= 19) {
+            const bikesAvailable = Math.max(15, Math.floor(totalStands * 0.75) + Math.floor(Math.random() * 5));
+            data[hour] = {
+                bikes_available: bikesAvailable,
+                stands_available: totalStands - bikesAvailable
+            };
+        }
+        // Late evening (8-11pm)
+        else if (hour >= 20) {
+            const bikesAvailable = Math.max(12, Math.floor(totalStands * 0.6) + Math.floor(Math.random() * 6));
+            data[hour] = {
+                bikes_available: bikesAvailable,
+                stands_available: totalStands - bikesAvailable
+            };
+        }
+        // Other times
+        else {
+            const bikesAvailable = Math.max(8, Math.floor(totalStands * 0.5) + Math.floor(Math.random() * 7));
+            data[hour] = {
+                bikes_available: bikesAvailable,
+                stands_available: totalStands - bikesAvailable
+            };
+        }
+    }
+    
+    return data;
+}
