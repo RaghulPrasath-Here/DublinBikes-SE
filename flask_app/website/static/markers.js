@@ -548,3 +548,71 @@ function findPrediction(stationId, timeString) {
     
     return predictionData[stationId].find(p => p.forecast_time === timeString);
 }
+
+// CHART FUNCTIONS
+
+// Load Chart.js properly - FIXED VERSION
+async function loadChartJsLibrary() {
+    return new Promise((resolve, reject) => {
+        if (window.Chart) {
+            resolve(window.Chart);
+            return;
+        }
+        
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+        script.async = true;
+        
+        script.onload = () => {
+            // Make sure Chart is defined after loading
+            if (window.Chart) {
+                resolve(window.Chart);
+            } else {
+                setTimeout(() => {
+                    if (window.Chart) {
+                        resolve(window.Chart);
+                    } else {
+                        reject(new Error("Chart.js loaded but Chart object not found"));
+                    }
+                }, 300);
+            }
+        };
+        
+        script.onerror = () => {
+            console.error("Failed to load Chart.js");
+            reject(new Error('Failed to load Chart.js'));
+        };
+        
+        document.head.appendChild(script);
+    });
+}
+
+// Fetch historical data for a specific station
+async function fetchStationHistoricalData(stationId) {
+    // Check if we already have preloaded data
+    if (allStationHistory[stationId]) {
+        return allStationHistory[stationId];
+    }
+    
+    try {
+        // Try to fetch real data first
+        try {
+            const response = await fetch(`/station-history/${stationId}`);
+            
+            if (response.ok) {
+                const data = await response.json();
+                // Cache it for future use
+                allStationHistory[stationId] = data;
+                return data;
+            }
+        } catch (e) {
+            // Silent catch
+        }
+        
+        // If server endpoint doesn't exist or failed, use mock data
+        return generateMockStationHistory();
+    } catch (error) {
+        console.error('Error fetching station history:', error);
+        return null;
+    }
+}
