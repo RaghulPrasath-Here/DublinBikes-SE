@@ -777,3 +777,78 @@ function showStationChart(marker, station, historyData) {
         }
     });
 }
+
+// Process station data for the chart - handles both array and object formats
+function processStationData(data) {
+    const labels = [];
+    const bikesAvailable = [];
+    const standsAvailable = [];
+    
+    // Generate all 24 hour labels first
+    for (let hour = 0; hour < 24; hour++) {
+        const hourFormatted = formatHourLabel(hour);
+        labels.push(hourFormatted);
+    }
+    
+    // If data is array format (timestamps)
+    if (Array.isArray(data)) {
+        // Initialize with zeros
+        for (let hour = 0; hour < 24; hour++) {
+            bikesAvailable.push(0);
+            standsAvailable.push(0);
+        }
+        
+        // Group records by hour and calculate averages
+        const hourlyData = {};
+        
+        data.forEach(record => {
+            if (!record.timestamp) return;
+            
+            // Extract hour from timestamp (assumes format: "YYYY-MM-DD HH:MM:SS")
+            const hour = parseInt(record.timestamp.split(' ')[1].split(':')[0]);
+            
+            if (hour >= 0 && hour < 24) {
+                if (!hourlyData[hour]) {
+                    hourlyData[hour] = {
+                        bikes_count: 0,
+                        stands_count: 0,
+                        count: 0
+                    };
+                }
+                
+                hourlyData[hour].bikes_count += record.available_bikes;
+                hourlyData[hour].stands_count += record.available_bike_stands;
+                hourlyData[hour].count++;
+            }
+        });
+        
+        // Fill in the data arrays with calculated averages
+        Object.keys(hourlyData).forEach(hour => {
+            const h = parseInt(hour);
+            if (h >= 0 && h < 24) {
+                const data = hourlyData[h];
+                bikesAvailable[h] = Math.round(data.bikes_count / data.count);
+                standsAvailable[h] = Math.round(data.stands_count / data.count);
+            }
+        });
+    } 
+    // Object format (hour keys)
+    else {
+        for (let hour = 0; hour < 24; hour++) {
+            const hourStr = hour.toString();
+            const hourData = (data && (data[hourStr] || data[hour])) || { bikes_available: 0, stands_available: 0 };
+            
+            bikesAvailable.push(hourData.bikes_available || 0);
+            standsAvailable.push(hourData.stands_available || 0);
+        }
+    }
+    
+    return { labels, bikesAvailable, standsAvailable };
+}
+
+// Helper to format hour labels consistently
+function formatHourLabel(hour) {
+    if (hour === 0) return '12am';
+    if (hour === 12) return '12pm';
+    return hour < 12 ? `${hour}am` : `${hour-12}pm`;
+}
