@@ -852,3 +852,94 @@ function formatHourLabel(hour) {
     if (hour === 12) return '12pm';
     return hour < 12 ? `${hour}am` : `${hour-12}pm`;
 }
+
+// REMAINING UTILITY FUNCTIONS
+
+function calculateRoute() {
+    const start = document.getElementById("start").value;
+
+    if (!start) {
+        alert("Please enter starting point.");
+        return;
+    }
+    if (!endLat || !endLng) {
+        alert("Please select a destination station.");
+        return;
+    }
+
+    const request = {
+        origin: start, 
+        destination: { lat: endLat, lng: endLng },
+        travelMode: google.maps.TravelMode.WALKING
+    };
+
+    directionsService.route(request, (result, status) => {
+        if (status === google.maps.DirectionsStatus.OK) {
+            directionsRenderer.setOptions({
+                suppressMarkers: true,
+            });
+            directionsRenderer.setDirections(result);
+
+            const startLocation = result.routes[0].legs[0].start_location;
+
+            new google.maps.Marker({
+                position: { 
+                    lat: startLocation.lat(), 
+                    lng: startLocation.lng() 
+                },
+                map: map,
+                title: "Start",
+            });
+        } else {
+            alert("Route could not be calculated: " + status);
+        }
+    });
+}
+
+function initializeAutocomplete() {
+    const startInput = document.getElementById("start");
+    
+    const dublin_boundary = {
+        componentRestrictions: { country: "IE" },
+        bounds: new google.maps.LatLngBounds(
+            new google.maps.LatLng(53.2000, -6.5000),
+            new google.maps.LatLng(53.4500, -6.0000)
+        ),
+        strictBounds: true
+    };
+    
+    if (google.maps && google.maps.places) {
+        new google.maps.places.Autocomplete(startInput, dublin_boundary);
+    } else {
+        console.error("Google Maps Places API not available");
+    }
+}
+
+function handleStationClick(event) {
+    const element = event.target; 
+    // Get the latitude and longitude from the clicked element
+    endLat = parseFloat(element.dataset.lat);
+    endLng = parseFloat(element.dataset.lng);
+
+    const name = element.dataset.select;
+    // You can now use these values
+    const button = document.getElementById("dropbtn");
+    button.textContent = name;
+}
+
+function dropDownStation() {
+    let stationName = stationDataDropDown.map(station => {
+        return `<p data-lat="${station.lat}" data-lng="${station.lng}" data-select="${station.name}" onclick="handleStationClick(event)" id="dropdown-content">${station.name}</p>` ;
+    }).join("\n");
+
+    document.querySelector(".dropdown").innerHTML = `
+        <span>Select Available Station</span>
+        <button id="dropbtn">select station</button>
+        <div class="dropdown-content">
+            ${stationName}
+        </div>
+    `
+}
+
+// Start the initialization process
+initMap();
