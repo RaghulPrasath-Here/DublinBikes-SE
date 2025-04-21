@@ -16,6 +16,10 @@ This project integrates multiple components:
 - **Hosted on AWS EC2**: The web app is deployed via Gunicorn + Nginx.
 
 ---
+## Project Demo picture
+
+![image alt](https://github.com/RaghulPrasath-Here/DublinBikes-SE/blob/7f74de72a5265fc5abc91c1ad30b3664bcf8b104/flask_app/website/static/images/Pages.png)
+![image alt](https://github.com/RaghulPrasath-Here/DublinBikes-SE/blob/7f74de72a5265fc5abc91c1ad30b3664bcf8b104/flask_app/website/static/images/Map.png)
 
 ## 📁 Folder Structure
 
